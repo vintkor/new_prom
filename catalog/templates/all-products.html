@@ -12,7 +12,7 @@
         <div class="row">
             {% for product in products %}
                 <div class="col-md-3">
-                    <img class="card-img-top" src="{{ product.image.url }}">
+                    <img class="card-img-top img-responsive" src="{{ product.image.url }}">
                     <div class="card-body">
                         <h4 class="card-title"><a href="{% url 'single-product' product.id %}">{{ product.title }}</a></h4>
                         <div class="card-text">{{ product.text | safe | truncatewords_html:20 }}</div>
