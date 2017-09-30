@@ -7,10 +7,25 @@
                                        data-parent="#dop-info"
                                        href="#collapse-delivery"
                                        aria-expanded="true"
-                                       aria-controls="collapse-delivery">Доставка</a>
+                                       aria-controls="collapse-delivery">Информация о филлиале</a>
             </h4>
         </div>
         <div id="collapse-delivery" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="delivery-head">
+            <div class="panel-body">{{ branch.info | safe }}</div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="delivery-head">
+            <h4 class="panel-title"><a role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#dop-info"
+                                       href="#collapse-delivery"
+                                       aria-expanded="true"
+                                       aria-controls="collapse-delivery">Доставка</a>
+            </h4>
+        </div>
+        <div id="collapse-delivery" class="panel-collapse collapse" role="tabpanel" aria-labelledby="delivery-head">
             <div class="panel-body">{{ delivery.delivery | safe }}</div>
         </div>
     </div>
