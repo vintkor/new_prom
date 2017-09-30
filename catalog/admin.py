@@ -3,6 +3,14 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db import models
 from mptt.admin import DraggableMPTTAdmin
 from .models import Category, Product, Feature, Delivery
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin, ImportExportActionModelAdmin
+
+
+class ProductResource(resources.ModelResource):
+
+    class Meta:
+        model = Product
 
 
 class DeliveryInline(admin.StackedInline):
@@ -17,10 +25,11 @@ class FeatureInline(admin.TabularInline):
     suit_classes = 'suit-tab suit-tab-feature'
 
 
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(ImportExportActionModelAdmin):
     list_display = ["title", "category", "active", "price", "step", "created", "updated"]
     list_filter = ["active", "category"]
     search_fields = ['title']
+    resource_class = ProductResource
     inlines = [FeatureInline, DeliveryInline]
     formfield_overrides = {
         models.ManyToManyField: {'widget': FilteredSelectMultiple("Поставщики", is_stacked=False)},

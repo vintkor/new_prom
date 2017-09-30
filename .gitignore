@@ -5,6 +5,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+staticfiles/**
 media/**
 .idea/
 prod_settings.py

@@ -34,7 +34,7 @@ except:
     # Application definition
 
     INSTALLED_APPS = [
-        # 'suit',
+        'suit',
         'django.contrib.admin',
         'django.contrib.auth',
         'mptt',
@@ -45,6 +45,7 @@ except:
         'debug_toolbar',
         'ckeditor',
         'ckeditor_uploader',
+        'import_export',
 
         'catalog',
         'partners',
@@ -81,22 +82,11 @@ except:
 
     WSGI_APPLICATION = 'new_prom.wsgi.application'
 
-
-    # Database
-    # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.sqlite3',
-    #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    #     }
-    # }
-
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'new_prom',
-            'USER': 'vintkor',
+            'USER': 'root',
             'PASSWORD': '7108471084',
             'HOST': '127.0.0.1',
             'PORT': '',
