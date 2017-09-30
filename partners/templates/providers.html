@@ -1,0 +1,39 @@
+<h3>Поставщики</h3>
+{% for branch in branches %}
+    <button class="btn get-branch" style="margin-bottom: 4px;"
+            data-branch="{{ branch.id }}"
+            data-region="{{ region }}"
+            data-product="{{ product_id }}"
+    >{{ branch.title }} - {{ branch.parent_provider }}</button>
+{% endfor %}
+
+
+<script>
+    var loader = $('.loader');
+    $('.get-branch').click(function () {
+        $('.get-branch').removeClass('btn-success');
+        $(this).addClass('btn-success');
+        $.ajax({
+            url: '{% url 'ajax-get-branch' %}',
+            type: 'GET',
+            data: {
+                'region': $(this).data('region'),
+                'branch': $(this).data('branch'),
+                'product': $(this).data('product')
+            },
+            dataType: 'text',
+            beforeSend: function () {
+                loader.toggleClass('active');
+            },
+            complete: function () {
+                loader.toggleClass('active');
+            },
+            success: function (data) {
+                $('#branch').html(data);
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    });
+</script>

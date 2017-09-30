@@ -1,0 +1,115 @@
+<div class="panel-group" id="dop-info" role="tablist" aria-multiselectable="true">
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="delivery-head">
+            <h4 class="panel-title"><a role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#dop-info"
+                                       href="#collapse-delivery"
+                                       aria-expanded="true"
+                                       aria-controls="collapse-delivery">Доставка</a>
+            </h4>
+        </div>
+        <div id="collapse-delivery" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="delivery-head">
+            <div class="panel-body">{{ delivery.delivery | safe }}</div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="deliverymy-head">
+            <h4 class="panel-title"><a role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#dop-info"
+                                       href="#collapse-deliverymy"
+                                       aria-expanded="true"
+                                       aria-controls="collapse-deliverymy">Самовывоз</a>
+            </h4>
+        </div>
+        <div id="collapse-deliverymy" class="panel-collapse collapse" role="tabpanel" aria-labelledby="deliverymy-head">
+            <div class="panel-body">{{ delivery.delivery_my | safe }}</div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="discount-head">
+            <h4 class="panel-title"><a role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#dop-info"
+                                       href="#collapse-discount"
+                                       aria-expanded="true"
+                                       aria-controls="collapse-discount">Скидки</a>
+            </h4>
+        </div>
+        <div id="collapse-discount" class="panel-collapse collapse" role="tabpanel" aria-labelledby="discount-head">
+            <div class="panel-body">{{ delivery.discount | safe }}</div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="payment_cash-head">
+            <h4 class="panel-title"><a role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#dop-info"
+                                       href="#collapse-payment_cash"
+                                       aria-expanded="true"
+                                       aria-controls="collapse-payment_cash">Оплата наличными</a>
+            </h4>
+        </div>
+        <div id="collapse-payment_cash" class="panel-collapse collapse" role="tabpanel" aria-labelledby="payment_cash-head">
+            <div class="panel-body">{{ delivery.payment_cash | safe }}</div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="payment_card-head">
+            <h4 class="panel-title"><a role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#dop-info"
+                                       href="#collapse-payment_card"
+                                       aria-expanded="true"
+                                       aria-controls="collapse-payment_card">Оплата на карточку</a>
+            </h4>
+        </div>
+        <div id="collapse-payment_card" class="panel-collapse collapse" role="tabpanel" aria-labelledby="payment_card-head">
+            <div class="panel-body">{{ delivery.payment_card | safe }}</div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="payment_bank-head">
+            <h4 class="panel-title"><a role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#dop-info"
+                                       href="#collapse-payment_bank"
+                                       aria-expanded="true"
+                                       aria-controls="collapse-payment_bank">Оплата на расчётный счёт</a>
+            </h4>
+        </div>
+        <div id="collapse-payment_bank" class="panel-collapse collapse" role="tabpanel" aria-labelledby="payment_bank-head">
+            <div class="panel-body">{{ delivery.payment_bank | safe }}</div>
+        </div>
+    </div>
+
+</div>
+
+{% if prices %}
+    <h3>Прайсы поставщика</h3>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Ссылка</th>
+                <th>Дата обновления</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for price in prices %}
+                <tr>
+                    <td>{{ price.title }}</td>
+                    <td><a href="{{ price.file.url }}" target="_blank">Скачать</a></td>
+                    <td>{{ price.updated }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

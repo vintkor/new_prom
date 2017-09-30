@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.title }} - ППФ{% endblock title %}
+
+{% block content %}
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3" style="border-right: 1px solid #f6f6f6;">
+            <img src="{{ product.image.url }}" class="img-responsive">
+            <h3>Область</h3>
+            {% for region in regions %}
+                <button class="btn get-regions" style="margin-bottom: 4px;" data-product="{{ product.id }}" data-region="{{ region.id }}">{{ region }}</button>
+            {% endfor %}
+            <div id="providers"></div>
+        </div>
+        <div class="col-md-9">
+            <h1>{{ product.title }}</h1>
+
+
+            <div>
+
+            <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#desc" aria-controls="desc" role="tab" data-toggle="tab">Описание</a></li>
+                    <li role="presentation"><a href="#fiture" aria-controls="fiture" role="tab" data-toggle="tab">Характеристики</a></li>
+                    <li role="presentation"><a href="#delivery" aria-controls="delivery" role="tab" data-toggle="tab">Дополнительная информация</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active" id="desc">{{ product.text | safe }}</div>
+                    <div role="tabpanel" class="tab-pane fade" id="fiture">
+
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            {% for feature in features %}
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="heading-{{ forloop.counter }}">
+                                        <h4 class="panel-title"><a role="button"
+                                                                   data-toggle="collapse"
+                                                                   data-parent="#accordion"
+                                                                   href="#collapse-{{ forloop.counter }}"
+                                                                   aria-expanded="true"
+                                                                   aria-controls="collapse-{{ forloop.counter }}">{{ feature.title }}</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse-{{ forloop.counter }}" class="panel-collapse collapse {% if forloop.counter == 1 %}in{% endif %}" role="tabpanel" aria-labelledby="heading-{{ forloop.counter }}">
+                                        <div class="panel-body">{{ feature.text | safe }}{% if feature.file %}<hr>
+                                            <a target="_blank" class="btn btn-default" href="{{ feature.file.url }}">Смотреть файл</a>{% endif %}</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="delivery"><div id="branch"><p class="text-warning">Выберите регион и поставщика</p></div></div>
+                </div>
+
+            </div>
+
+
+        </div>
+    <style>
+    .tab-pane {
+        padding: 20px 0;
+    }
+    </style>
+{% endblock content %}
+
+{% block scripts_footer %}
+<script>
+    var loader = $('.loader');
+    $('.get-regions').click(function () {
+        $('.get-regions').removeClass('btn-success');
+        $(this).addClass('btn-success');
+        $.ajax({
+            url: '{% url 'ajax-get-providers' %}',
+            type: 'GET',
+            data: {
+                'region': $(this).data('region'),
+                'product': $(this).data('product')
+            },
+            dataType: 'text',
+            beforeSend: function () {
+                loader.toggleClass('active');
+            },
+            complete: function () {
+                loader.toggleClass('active');
+            },
+            success: function (data) {
+                $('#providers').html(data);
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    });
+</script>
+{% endblock scripts_footer %}
