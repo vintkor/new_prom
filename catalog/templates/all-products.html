@@ -15,6 +15,7 @@
                     <img class="card-img-top img-responsive" src="{{ product.image.url }}">
                     <div class="card-body">
                         <h4 class="card-title"><a href="{% url 'single-product' product.id %}">{{ product.title }}</a></h4>
+                        <h5>Артикул {{ product.code }}</h5>
                         <div class="card-text">{{ product.text | safe | truncatewords_html:20 }}</div>
                         <p class="card-text"><small class="text-muted">Дата обновления: {{ product.updated }}</small></p>
                     </div>

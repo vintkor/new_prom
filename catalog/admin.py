@@ -26,8 +26,9 @@ class FeatureInline(admin.TabularInline):
 
 
 class ProductAdmin(ImportExportActionModelAdmin):
-    list_display = ["title", "category", "active", "price", "step", "created", "updated"]
+    list_display = ["title", "category", "code", "active", "price", "step", "created", "updated"]
     list_filter = ["active", "category"]
+    readonly_fields = ["code"]
     search_fields = ['title']
     resource_class = ProductResource
     inlines = [FeatureInline, DeliveryInline]
@@ -37,7 +38,7 @@ class ProductAdmin(ImportExportActionModelAdmin):
     fieldsets = [
         (None, {
             'classes': ('suit-tab', 'suit-tab-product',),
-            'fields': ["title", "category", "price", "step", "text", "image", "active"]
+            'fields': ["title", "category", "code", "price", "step", "text", "image", "active"]
         }),
     ]
     suit_form_tabs = (

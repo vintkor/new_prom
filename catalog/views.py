@@ -27,3 +27,9 @@ class CatalogDetail(DetailView):
         context['regions'] = regions
 
         return context
+
+
+class CatalogSearch(CatalogList):
+
+    def get_queryset(self):
+        return Product.objects.filter(code__icontains=self.request.GET.get('code'))

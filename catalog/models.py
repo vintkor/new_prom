@@ -20,6 +20,16 @@ def set_file_name(instance, filename):
     return path
 
 
+def set_code():
+    last_product = Product.objects.last()
+    if last_product is None:
+        new_code = 'ПФ-10000'
+    else:
+        last_code = last_product.code.split('-')
+        new_code = '{}-{}'.format(last_code[0], (int(last_code[1]) + 1))
+    return new_code
+
+
 class Category(BaseModel, MPTTModel):
     title = models.CharField(verbose_name='Категория', max_length=255)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
@@ -44,6 +54,7 @@ class Product(BaseModel):
     text = RichTextUploadingField(verbose_name="Текст поста", blank=True, default="")
     image = models.ImageField(verbose_name="Изображение", blank=True, default='', upload_to=set_image_name)
     active = models.BooleanField(default=True, verbose_name="Вкл/Выкл")
+    code = models.CharField(verbose_name="Артикул", max_length=20, default=set_code, unique=True, blank=True, null=True)
 
     class Meta:
         verbose_name = "Товар"
