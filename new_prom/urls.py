@@ -20,6 +20,7 @@ from new_prom import settings
 from catalog.views import index
 
 urlpatterns = [
+    url(r'^jet/', include('jet.urls', 'jet')),
     url(r'^$', index),
     url(r'^catalog/', include('catalog.urls')),
     url(r'^partners/', include('partners.urls')),

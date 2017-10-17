@@ -3,9 +3,10 @@ from django import forms
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db import models
 from .models import Provider, Region, Branch, File
+from jet.admin import CompactInline
 
 
-class FileInline(admin.StackedInline):
+class FileInline(CompactInline):
     model = File
     extra = 0
     exclude = ['']
@@ -22,7 +23,7 @@ class RegionAdmin(admin.ModelAdmin):
     list_per_page = 25
 
 
-class BranchInline(admin.StackedInline):
+class BranchInline(CompactInline):
     extra = 0
     model = Branch
     formfield_overrides = {

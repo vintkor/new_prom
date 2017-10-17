@@ -5,6 +5,8 @@ from mptt.admin import DraggableMPTTAdmin
 from .models import Category, Product, Feature, Delivery
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin, ImportExportActionModelAdmin
+from jet.admin import CompactInline
+from jet.filters import DateRangeFilter
 
 
 class ProductResource(resources.ModelResource):
@@ -13,13 +15,13 @@ class ProductResource(resources.ModelResource):
         model = Product
 
 
-class DeliveryInline(admin.StackedInline):
+class DeliveryInline(CompactInline):
     extra = 0
     model = Delivery
     suit_classes = 'suit-tab suit-tab-delivery'
 
 
-class FeatureInline(admin.TabularInline):
+class FeatureInline(CompactInline):
     extra = 0
     model = Feature
     suit_classes = 'suit-tab suit-tab-feature'
@@ -27,7 +29,7 @@ class FeatureInline(admin.TabularInline):
 
 class ProductAdmin(ImportExportActionModelAdmin):
     list_display = ["title", "category", "code", "active", "price", "step", "created", "updated"]
-    list_filter = ["active", "category"]
+    list_filter = (('created', DateRangeFilter), 'category', )
     readonly_fields = ["code"]
     search_fields = ['title']
     resource_class = ProductResource

@@ -34,7 +34,7 @@ except:
     # Application definition
 
     INSTALLED_APPS = [
-        'suit',
+        'jet',
         'django.contrib.admin',
         'django.contrib.auth',
         'mptt',
@@ -46,6 +46,7 @@ except:
         'ckeditor',
         'ckeditor_uploader',
         'import_export',
+        'rangefilter',
 
         'catalog',
         'partners',
@@ -147,14 +148,19 @@ except:
 
     MPTT_ADMIN_LEVEL_INDENT = 20
 
-    SUIT_CONFIG = {
-        'ADMIN_NAME': 'PPF HELP',
-    #     'MENU_ICONS': {
-    #         'sites': 'icon-leaf',
-    #         'business_part': 'icon-briefcase',
-    #         'monastic_world': 'icon-globe',
-            'auth': 'icon-lock',
-    #     }
-    }
-
     INTERNAL_IPS = '127.0.0.1'
+
+    JET_SIDE_MENU_ITEMS = [
+        {'label': 'Каталог', 'app_label': 'catalog', 'items': [
+            {'name': 'catalog.product'},
+            {'name': 'catalog.category'},
+        ]},
+        {'label': 'Партнёры', 'app_label': 'partners', 'items': [
+            {'name': 'partners.region'},
+            {'name': 'partners.provider'},
+        ]},
+        {'label': 'Пользователи', 'app_label': 'auth', 'items': [
+            {'name': 'auth.user'},
+            {'name': 'auth.group'},
+        ]},
+    ]
