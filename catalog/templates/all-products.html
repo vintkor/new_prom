@@ -12,7 +12,7 @@
         <div class="row">
             {% for product in products %}
                 <div class="col-md-3">
-                    <img class="card-img-top img-responsive" src="{{ product.image.url }}">
+                    <img src="{% if product.image %}{{ product.image.url }}{% else %}//via.placeholder.com/350x300{% endif %}" class="img-responsive">
                     <div class="card-body">
                         <h4 class="card-title"><a href="{% url 'single-product' product.id %}">{{ product.title }}</a></h4>
                         <h5>Артикул {{ product.code }}</h5>

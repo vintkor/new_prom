@@ -4,6 +4,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.crypto import get_random_string
 from partners.models import Branch
+from currency.models import Currency
 
 
 def set_image_name(instance, filename):
@@ -48,8 +49,10 @@ class Category(BaseModel, MPTTModel):
 
 class Product(BaseModel):
     title = models.CharField(max_length=255, verbose_name="Заголовок")
-    category = TreeForeignKey(Category, blank=True, null=True)
+    category = TreeForeignKey(Category, blank=True, null=True, verbose_name='Категория')
     price = models.DecimalField(verbose_name="Цена", max_digits=8, decimal_places=2, blank=True, null=True)
+    currency = models.ForeignKey(Currency, null=True, blank=True, default=None)
+    course = models.DecimalField(verbose_name='Курс', max_digits=12, decimal_places=5, blank=True, null=True, default=1)
     step = models.DecimalField(verbose_name="Шаг", max_digits=8, decimal_places=3, default=1)
     text = RichTextUploadingField(verbose_name="Текст поста", blank=True, default="")
     image = models.ImageField(verbose_name="Изображение", blank=True, default='', upload_to=set_image_name)
@@ -62,6 +65,14 @@ class Product(BaseModel):
 
     def __str__(self):
         return "{}".format(self.title)
+
+    def get_currency_code(self):
+        return self.currency.code
+    get_currency_code.short_description = 'Валюта'
+
+    def get_price_UAH(self):
+        return round(self.price * self.course, 3)
+    get_price_UAH.short_description = 'Цена в грн'
 
 
 class Feature(BaseModel):

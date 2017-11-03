@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db import models
 from mptt.admin import DraggableMPTTAdmin
@@ -7,6 +7,9 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin, ImportExportActionModelAdmin
 from jet.admin import CompactInline
 from jet.filters import DateRangeFilter
+from .forms import SetCourseForm
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 
 
 class ProductResource(resources.ModelResource):
@@ -27,9 +30,40 @@ class FeatureInline(CompactInline):
     suit_classes = 'suit-tab suit-tab-feature'
 
 
+def set_course(modeladmin, request, queryset):
+    form = None
+    template = 'set-course.html'
+    context = {'items': queryset, 'title': 'Установыть новый курс'}
+
+    if 'apply' in request.POST:
+        form = SetCourseForm(request.POST)
+
+        if form.is_valid():
+            course = form.cleaned_data['course']
+
+            count = 0
+            for item in queryset:
+                item.course = course
+                item.save()
+                count += 1
+
+            modeladmin.message_user(request, "Курс {} установлен у {} товаров.".format(course, count), level=messages.SUCCESS)
+            return HttpResponseRedirect(request.get_full_path())
+
+    if not form:
+        form = SetCourseForm(initial={'_selected_action': request.POST.getlist(admin.ACTION_CHECKBOX_NAME)})
+        context['form'] = form
+
+    return render(request, template, context)
+
+
+set_course.short_description = 'Установить новый курс'
+
+
 class ProductAdmin(ImportExportActionModelAdmin):
-    list_display = ["title", "category", "code", "active", "price", "step", "created", "updated"]
-    list_filter = (('created', DateRangeFilter), 'category', )
+    list_display = ["title", "category", "code", "active", "price", "get_currency_code", "course", "get_price_UAH",
+                    "step", "created", "updated"]
+    list_filter = (('created', DateRangeFilter), 'category', 'currency',)
     readonly_fields = ["code"]
     search_fields = ['title']
     resource_class = ProductResource
@@ -37,17 +71,7 @@ class ProductAdmin(ImportExportActionModelAdmin):
     formfield_overrides = {
         models.ManyToManyField: {'widget': FilteredSelectMultiple("Поставщики", is_stacked=False)},
     }
-    fieldsets = [
-        (None, {
-            'classes': ('suit-tab', 'suit-tab-product',),
-            'fields': ["title", "category", "code", "price", "step", "text", "image", "active"]
-        }),
-    ]
-    suit_form_tabs = (
-        ('product', 'Товар'),
-        ('feature', 'Характеристики'),
-        ('delivery', 'Доп инфо'),
-    )
+    actions = [set_course]
 
 
 admin.site.register(Product, ProductAdmin)

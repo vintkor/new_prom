@@ -50,6 +50,7 @@ except:
 
         'catalog',
         'partners',
+        'currency',
     ]
 
     MIDDLEWARE = [
@@ -162,5 +163,8 @@ except:
         {'label': 'Пользователи', 'app_label': 'auth', 'items': [
             {'name': 'auth.user'},
             {'name': 'auth.group'},
+        ]},
+        {'label': 'Валюты', 'app_label': 'currency', 'items': [
+            {'name': 'currency.currency'},
         ]},
     ]

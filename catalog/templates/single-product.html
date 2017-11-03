@@ -6,7 +6,10 @@
     <div class="container-fluid">
     <div class="row">
         <div class="col-md-3" style="border-right: 1px solid #f6f6f6;">
-            <img src="{{ product.image.url }}" class="img-responsive">
+            <img src="{% if product.image %}{{ product.image.url }}{% else %}//via.placeholder.com/350x300{% endif %}" class="img-responsive">
+            <hr>
+            <h4>{{ product.get_price_UAH }} UAH <small>{{ product.price }} {{ product.currency.code }} (курс {{ product.course }})</small></h4>
+            <hr>
             <h3>Область</h3>
             {% for region in regions %}
                 <button class="btn get-regions" style="margin-bottom: 4px;" data-product="{{ product.id }}" data-region="{{ region.id }}">{{ region }}</button>

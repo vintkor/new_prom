@@ -1,0 +1,16 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <h2 style="color: #d22;">Новый курс будет записан для следующих позиций:</h2>
+        <ul class="list-group">
+            {% for item in items %}
+                <li class="list-group-item">{{ item }}</li>
+            {% endfor %}
+        </ul>
+        <input type="hidden" name="action" value="set_course" />
+        <input type="submit" name="apply" value="Сохранить" />
+    </form>
+{% endblock %}
