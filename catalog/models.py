@@ -71,7 +71,9 @@ class Product(BaseModel):
     get_currency_code.short_description = 'Валюта'
 
     def get_price_UAH(self):
-        return round(self.price * self.course, 3)
+        if self.price:
+            return round(self.price * self.course, 3)
+        return 'Цена не установленна'
     get_price_UAH.short_description = 'Цена в грн'
 
 
