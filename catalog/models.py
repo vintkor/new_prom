@@ -73,7 +73,7 @@ class Product(BaseModel):
     def get_price_UAH(self):
         if self.price:
             return round(self.price * self.course, 3)
-        return 'Цена не установленна'
+        return False
     get_price_UAH.short_description = 'Цена в грн'
 
 
