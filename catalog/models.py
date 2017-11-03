@@ -67,7 +67,9 @@ class Product(BaseModel):
         return "{}".format(self.title)
 
     def get_currency_code(self):
-        return self.currency.code
+        if self.currency:
+            return self.currency.code
+        return None
     get_currency_code.short_description = 'Валюта'
 
     def get_price_UAH(self):
