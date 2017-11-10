@@ -3,24 +3,44 @@
 {% block title %}ППФ - все товары{% endblock title %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="text-center" style="margin: 20px 0;">Catalog</h1>
-            </div>
-        </div>
-        <div class="row">
-            {% for product in products %}
-                <div class="col-md-3">
-                    <img src="{% if product.image %}{{ product.image.url }}{% else %}//via.placeholder.com/350x300{% endif %}" class="img-responsive">
-                    <div class="card-body">
-                        <h4 class="card-title"><a href="{% url 'single-product' product.id %}">{{ product.title }}</a></h4>
-                        <h5>Артикул {{ product.code }}</h5>
-                        <div class="card-text">{{ product.text | safe | truncatewords_html:20 }}</div>
-                        <p class="card-text"><small class="text-muted">Дата обновления: {{ product.updated }}</small></p>
-                    </div>
-                </div>
-            {% endfor %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center" style="margin: 20px 0;">Catalog</h1>
         </div>
     </div>
+    <table class="table table-hover">
+        <tr>
+            <th>Изображение</th>
+            <th>Артикул</th>
+            <th>Название</th>
+            <th>Цена</th>
+            <th>Курс</th>
+            <th>Цена в грн.</th>
+            <th>Добавление</th>
+            <th>Обновление</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td><div class="product-image" style="background-image: url('{% if product.image %}{{ product.image.url }}{% else %}//via.placeholder.com/350x300{% endif %}');"></div></th>
+            <td><code>{{ product.code }}</code></td>
+            <td><a href="{% url 'single-product' product.id %}">{{ product.title }}</a></td>
+            <td>{% if product.price %}{{ product.price }} <span class="label label-info pull-right">{{ product.currency.code }}</span>{% endif %}</td>
+            <td>{{ product.course }}</td>
+            <td>{% if product.price %}{{ product.get_price_UAH }}{% endif %}</td>
+            <td>{{ product.created }}</td>
+            <td>{{ product.updated }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <style>
+        .product-image {
+            width: 60px;
+            height: 40px;
+            background-size: cover;
+            background-position: center center;
+        }
+        td {
+            vertical-align: middle !important;
+        }
+    </style>
 {% endblock content %}
