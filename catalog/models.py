@@ -78,6 +78,9 @@ class Product(BaseModel):
         return False
     get_price_UAH.short_description = 'Цена в грн'
 
+    def get_delivery_count(self):
+        return self.delivery_set.count()
+
 
 class Feature(BaseModel):
     product = models.ForeignKey(Product, verbose_name='Товар', default=None)

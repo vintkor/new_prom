@@ -1,0 +1,83 @@
+[33mcommit 9a017dfa0652a05ca1056528316ac48cc46945f6[m
+Author: Alekxandr <alkv84@yandex.ru>
+Date:   Wed Nov 8 21:32:46 2017 +0200
+
+    Add delivery conditions to delivery model
+
+[33mcommit 2be2997f2249c1b3fa91f8c51ddc31c746fcf753[m
+Author: Alekxandr <alkv84@yandex.ru>
+Date:   Fri Nov 3 23:13:27 2017 +0200
+
+    .
+
+[33mcommit 0fabdc02a0c1c56ce184220414d4f30824b3065a[m
+Author: Alekxandr <alkv84@yandex.ru>
+Date:   Fri Nov 3 23:09:43 2017 +0200
+
+    .
+
+[33mcommit 6f8e8c69ba4ebf7d1e89b5774e9159974f12f105[m
+Author: Alekxandr <alkv84@yandex.ru>
+Date:   Fri Nov 3 23:06:10 2017 +0200
+
+    .
+
+[33mcommit 96345879825f450ccf36a86b21851ae59d602a0e[m
+Author: Alekxandr <alkv84@yandex.ru>
+Date:   Fri Nov 3 22:56:42 2017 +0200
+
+    Добавленна валюта
+
+[33mcommit a97f3e6ab578cff6dd929f8cbfb10f0c7e8fabfd[m
+Author: Alekxandr <alkv84@yandex.ru>
+Date:   Tue Oct 17 21:56:38 2017 +0300
+
+    django-admin-rangefilter==0.3.0
+
+[33mcommit 092a56b17578105884c9659f292469b9bb549d35[m
+Author: Alekxandr <alkv84@yandex.ru>
+Date:   Tue Oct 17 21:50:14 2017 +0300
+
+    Django Jet
+
+[33mcommit dc2c34926ffc5d9fc511e3becd7aae15af56d226[m
+Author: Alekxandr <alkv84@yandex.ru>
+Date:   Sun Oct 8 19:57:36 2017 +0300
+
+    Add search
+
+[33mcommit 9b2c1d0c12db757403532152ab4436ebf347ab96[m
+Author: Alekxandr <alkv84@yandex.ru>
+Date:   Sun Oct 1 12:39:31 2017 +0300
+
+    Little changes
+
+[33mcommit a764754fe37b36eb68517c91586fba308ac2d1b2[m
+Author: Alekxandr <alkv84@yandex.ru>
+Date:   Sat Sep 30 20:33:06 2017 +0300
+
+    Django import export
+
+[33mcommit 91ec9bd9fbdbc14792ada15ef49b9b2a715bed5f[m
+Author: Alekxandr <alkv84@yandex.ru>
+Date:   Sat Sep 30 19:53:09 2017 +0300
+
+    Вывод информации о поставщике
+
+[33mcommit b6773c1ea7f2081d799ae329dcc5bdf99496abe6[m
+Author: Alekxandr <alkv84@yandex.ru>
+Date:   Sat Sep 30 16:31:31 2017 +0300
+
+    little
+
+[33mcommit 2d75882dadd12ea62eb57bd274176feb659397b8[m
+Author: Alekxandr <alkv84@yandex.ru>
+Date:   Sat Sep 30 15:46:59 2017 +0300
+
+    Little
+
+[33mcommit 51d5b4e704a3695d5e07f39d0858607ef8565f6f[m
+Author: Alekxandr <alkv84@yandex.ru>
+Date:   Sat Sep 30 14:35:10 2017 +0300
+
+    Initial commit

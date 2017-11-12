@@ -12,23 +12,25 @@
         <tr>
             <th>Изображение</th>
             <th>Артикул</th>
+            <th>Категория</th>
             <th>Название</th>
             <th>Цена</th>
             <th>Курс</th>
             <th>Цена в грн.</th>
             <th>Добавление</th>
-            <th>Обновление</th>
+            <th>Поставщики</th>
         </tr>
         {% for product in products %}
         <tr>
             <td><div class="product-image" style="background-image: url('{% if product.image %}{{ product.image.url }}{% else %}//via.placeholder.com/350x300{% endif %}');"></div></th>
             <td><code>{{ product.code }}</code></td>
+            <td>{% if product.category %}{{ product.category }}{% endif %}</td>
             <td><a href="{% url 'single-product' product.id %}">{{ product.title }}</a></td>
             <td>{% if product.price %}{{ product.price }} <span class="label label-info pull-right">{{ product.currency.code }}</span>{% endif %}</td>
             <td>{{ product.course }}</td>
             <td>{% if product.price %}{{ product.get_price_UAH }}{% endif %}</td>
             <td>{{ product.created }}</td>
-            <td>{{ product.updated }}</td>
+            <td><span class="label {% if product.get_delivery_count == 0 %}label-danger{% else %}label-info{%endif%}">{{ product.get_delivery_count }}</span></td>
         </tr>
         {% endfor %}
     </table>
