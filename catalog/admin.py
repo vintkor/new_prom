@@ -30,6 +30,20 @@ class FeatureInline(CompactInline):
     suit_classes = 'suit-tab suit-tab-feature'
 
 
+def re_count_on(modeladmin, request, queryset):
+    for item in queryset:
+        item.re_count = True
+        item.save(update_fields=('re_count',))
+re_count_on.short_description = 'Пересчитывать в грн'
+
+
+def re_count_off(modeladmin, request, queryset):
+    for item in queryset:
+        item.re_count = False
+        item.save(update_fields=('re_count',))
+re_count_off.short_description = 'Не пересчитывать в грн'
+
+
 def set_course(modeladmin, request, queryset):
     form = None
     template = 'set-course.html'
@@ -71,7 +85,7 @@ class ProductAdmin(ImportExportActionModelAdmin):
     formfield_overrides = {
         models.ManyToManyField: {'widget': FilteredSelectMultiple("Поставщики", is_stacked=False)},
     }
-    actions = (set_course,)
+    actions = (set_course, re_count_off, re_count_on)
 
 
 admin.site.register(Product, ProductAdmin)
