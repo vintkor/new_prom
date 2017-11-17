@@ -4,12 +4,15 @@ from django.db import models
 from mptt.admin import DraggableMPTTAdmin
 from .models import Category, Product, Feature, Delivery
 from import_export import resources
-from import_export.admin import ImportExportModelAdmin, ImportExportActionModelAdmin
+# from import_export.admin import ImportExportModelAdmin, ImportExportActionModelAdmin
 from jet.admin import CompactInline
 from jet.filters import DateRangeFilter
 from .forms import SetCourseForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from xlsxwriter import Workbook
+from django.http import HttpResponse
+import datetime
 
 
 class ProductResource(resources.ModelResource):
@@ -74,7 +77,31 @@ def set_course(modeladmin, request, queryset):
 set_course.short_description = 'Установить новый курс'
 
 
-class ProductAdmin(ImportExportActionModelAdmin):
+def save_as_xlsx(modeladmin, request, queryset):
+    response = HttpResponse(content_type='text/xlsx')
+    response['Content-Disposition'] = 'attachment; filename="ppf-catalog-{}.xlsx"'.format(datetime.datetime.now())
+
+    workbook = Workbook(response)
+    worksheet = workbook.add_worksheet('Products')
+
+    header = ('TITLE', 'CODE', 'CATEGORY_ID', 'PRICE', 'CURRENCY_ID', 'COURSE')
+
+    [worksheet.write(0, col, i) for col, i in enumerate(header)]
+
+    for row, item in enumerate(queryset):
+        worksheet.write(row + 1, 0, item.title)
+        worksheet.write(row + 1, 1, item.code)
+        worksheet.write(row + 1, 2, item.category.id)
+        worksheet.write(row + 1, 3, item.price)
+        worksheet.write(row + 1, 4, item.currency_id)
+        worksheet.write(row + 1, 5, item.course)
+
+    return response
+
+save_as_xlsx.short_description = 'Сохранить в формате XLSX'
+
+
+class ProductAdmin(admin.ModelAdmin):
     list_display = ("title", "category", "code", "active", "price", "get_currency_code", "course",
                     "re_count", "get_price_UAH", "step", "created", "updated")
     list_filter = (('created', DateRangeFilter), 'code', 'category', 'currency', 're_count')
@@ -85,7 +112,7 @@ class ProductAdmin(ImportExportActionModelAdmin):
     formfield_overrides = {
         models.ManyToManyField: {'widget': FilteredSelectMultiple("Поставщики", is_stacked=False)},
     }
-    actions = (set_course, re_count_off, re_count_on)
+    actions = (set_course, re_count_off, re_count_on, save_as_xlsx)
 
 
 admin.site.register(Product, ProductAdmin)
