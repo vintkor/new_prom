@@ -63,6 +63,7 @@ class Product(BaseModel):
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
+        ordering = ('-code',)
 
     def __str__(self):
         return "{}".format(self.title)
