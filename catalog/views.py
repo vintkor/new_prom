@@ -13,6 +13,7 @@ class CatalogList(ListView):
     model = Product
     context_object_name = 'products'
     template_name = 'all-products.html'
+    paginate_by = 50
 
     def get_queryset(self, **kwargs):
         queryset = Product.objects.prefetch_related('delivery_set').select_related(
