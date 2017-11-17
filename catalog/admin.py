@@ -61,17 +61,17 @@ set_course.short_description = 'Установить новый курс'
 
 
 class ProductAdmin(ImportExportActionModelAdmin):
-    list_display = ["title", "category", "code", "active", "price", "get_currency_code", "course", "get_price_UAH",
-                    "step", "created", "updated"]
-    list_filter = (('created', DateRangeFilter), 'category', 'currency',)
+    list_display = ("title", "category", "code", "active", "price", "get_currency_code", "course",
+                    "re_count", "get_price_UAH", "step", "created", "updated")
+    list_filter = (('created', DateRangeFilter), 'code', 'category', 'currency', 're_count')
     readonly_fields = ["code"]
-    search_fields = ['title']
+    search_fields = ('title',)
     resource_class = ProductResource
-    inlines = [FeatureInline, DeliveryInline]
+    inlines = (FeatureInline, DeliveryInline)
     formfield_overrides = {
         models.ManyToManyField: {'widget': FilteredSelectMultiple("Поставщики", is_stacked=False)},
     }
-    actions = [set_course]
+    actions = (set_course,)
 
 
 admin.site.register(Product, ProductAdmin)

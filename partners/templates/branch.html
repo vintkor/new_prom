@@ -105,6 +105,21 @@
         </div>
     </div>
 
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="delivery_condition-head">
+            <h4 class="panel-title"><a role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#dop-info"
+                                       href="#collapse-delivery_condition"
+                                       aria-expanded="true"
+                                       aria-controls="collapse-delivery_condition">Условия поставки</a>
+            </h4>
+        </div>
+        <div id="collapse-delivery_condition" class="panel-collapse collapse" role="tabpanel" aria-labelledby="delivery_condition-head">
+            <div class="panel-body">{{ delivery.delivery_condition | safe }}</div>
+        </div>
+    </div>
+
 </div>
 
 {% if prices %}

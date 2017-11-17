@@ -53,6 +53,7 @@ class Product(BaseModel):
     price = models.DecimalField(verbose_name="Цена", max_digits=8, decimal_places=2, blank=True, null=True)
     currency = models.ForeignKey(Currency, null=True, blank=True, default=None)
     course = models.DecimalField(verbose_name='Курс', max_digits=12, decimal_places=5, blank=True, null=True, default=1)
+    re_count = models.BooleanField(verbose_name="Пересчитывать в грн?", default=True)
     step = models.DecimalField(verbose_name="Шаг", max_digits=8, decimal_places=3, default=1)
     text = RichTextUploadingField(verbose_name="Текст поста", blank=True, default="")
     image = models.ImageField(verbose_name="Изображение", blank=True, default='', upload_to=set_image_name)
@@ -105,6 +106,7 @@ class Delivery(BaseModel):
     payment_cash = RichTextUploadingField(verbose_name="Оплата наличными")
     payment_card = RichTextUploadingField(verbose_name="Оплата картой")
     payment_bank = RichTextUploadingField(verbose_name="Оплата расчётный счёт")
+    delivery_condition = RichTextUploadingField(verbose_name="Условие поставки", default=' ')
 
     class Meta:
         verbose_name = "Доп инфо"
