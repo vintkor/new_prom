@@ -15,7 +15,8 @@ class CatalogList(ListView):
     template_name = 'all-products.html'
 
     def get_queryset(self, **kwargs):
-        queryset = Product.objects.prefetch_related('delivery_set').all()
+        queryset = Product.objects.prefetch_related('delivery_set').select_related(
+            'category', 'currency').filter(active=True)
         return queryset
 
 
