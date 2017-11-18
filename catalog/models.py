@@ -59,6 +59,11 @@ class Category(BaseModel, MPTTModel):
     def __str__(self):
         return "{}".format(self.title)
 
+    def get_id(self):
+        if self.parent:
+            return self.parent.id
+        return ''
+
 
 class Product(BaseModel):
     title = models.CharField(max_length=255, verbose_name="Заголовок")

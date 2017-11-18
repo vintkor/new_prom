@@ -152,6 +152,7 @@ def save_as_xlsx(modeladmin, request, queryset):
 
     workbook = Workbook(response)
     worksheet = workbook.add_worksheet('Export Products Sheet')
+    worksheet_2 = workbook.add_worksheet('Export Groups Sheet')
 
     header = (
         'Название_позиции',
@@ -183,6 +184,23 @@ def save_as_xlsx(modeladmin, request, queryset):
         worksheet.write(row + 1, 9, item.code)
         worksheet.write(row + 1, 10, item.category.id)
         worksheet.write(row + 1, 11, item.code)
+
+    header_2 = (
+        'Номер_группы',
+        'Название_группы',
+        'Идентификатор_группы',
+        'Номер_родителя',
+        'Идентификатор_родителя',
+    )
+
+    [worksheet_2.write(0, col, i) for col, i in enumerate(header_2)]
+
+    for row, item in enumerate(Category.objects.all()):
+        worksheet_2.write(row + 1, 0, item.id)
+        worksheet_2.write(row + 1, 1, item.title)
+        worksheet_2.write(row + 1, 2, item.id)
+        worksheet_2.write(row + 1, 3, item.get_id())
+        worksheet_2.write(row + 1, 4, item.get_id())
 
     return response
 
