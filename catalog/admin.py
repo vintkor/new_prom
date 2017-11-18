@@ -162,6 +162,7 @@ def save_as_xlsx(modeladmin, request, queryset):
         'Валюта',
         'Единица_измерения',
         'Ссылка_изображения',
+        'Наличие',
         'Идентификатор_товара',
         'Идентификатор_группы',
     )
@@ -177,8 +178,9 @@ def save_as_xlsx(modeladmin, request, queryset):
         worksheet.write(row + 1, 5, item.get_currency_code())
         worksheet.write(row + 1, 6, item.unit.short_title)
         worksheet.write(row + 1, 7, '{}{}'.format(request.META.get('HTTP_HOST'), item.image.url))
-        worksheet.write(row + 1, 8, item.code)
-        worksheet.write(row + 1, 9, item.category.id)
+        worksheet.write(row + 1, 8, '+')
+        worksheet.write(row + 1, 9, item.code)
+        worksheet.write(row + 1, 10, item.category.id)
 
     return response
 
