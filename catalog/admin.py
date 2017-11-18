@@ -175,7 +175,7 @@ def save_as_xlsx(modeladmin, request, queryset):
     for row, item in enumerate(queryset):
         worksheet.write(row + 1, 0, item.title)
         worksheet.write(row + 1, 1, item.category.title)
-        worksheet.write(row + 1, 2, item.text)
+        worksheet.write(row + 1, 2, item.text.replace(chr(13), '').replace(chr(10), ''))
         worksheet.write(row + 1, 3, 'r')
         worksheet.write(row + 1, 4, item.get_price_UAH())
         worksheet.write(row + 1, 5, item.get_currency_code())
