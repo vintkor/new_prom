@@ -165,6 +165,7 @@ def save_as_xlsx(modeladmin, request, queryset):
         'Наличие',
         'Идентификатор_товара',
         'Идентификатор_группы',
+        'Код_товара',
     )
 
     [worksheet.write(0, col, i) for col, i in enumerate(header)]
@@ -181,6 +182,7 @@ def save_as_xlsx(modeladmin, request, queryset):
         worksheet.write(row + 1, 8, '+')
         worksheet.write(row + 1, 9, item.code)
         worksheet.write(row + 1, 10, item.category.id)
+        worksheet.write(row + 1, 11, item.code)
 
     return response
 
