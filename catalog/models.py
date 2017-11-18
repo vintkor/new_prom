@@ -31,6 +31,19 @@ def set_code():
     return new_code
 
 
+class Unit(BaseModel):
+    title = models.CharField(max_length=200, verbose_name='Название')
+    short_title = models.CharField(max_length=10, verbose_name='Короткое обозначение')
+
+    class Meta:
+        verbose_name = 'Единица измерения'
+        verbose_name_plural = 'Единицы измерения'
+        ordering = ('title',)
+
+    def __str__(self):
+        return self.short_title
+
+
 class Category(BaseModel, MPTTModel):
     title = models.CharField(verbose_name='Категория', max_length=255)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
@@ -54,6 +67,7 @@ class Product(BaseModel):
     currency = models.ForeignKey(Currency, null=True, blank=True, default=None)
     course = models.DecimalField(verbose_name='Курс', max_digits=12, decimal_places=5, blank=True, null=True, default=1)
     re_count = models.BooleanField(verbose_name="Пересчитывать в грн?", default=True)
+    unit = models.ForeignKey(Unit, verbose_name='Единица измерения', blank=True, null=True, default=None)
     step = models.DecimalField(verbose_name="Шаг", max_digits=8, decimal_places=3, default=1)
     text = RichTextUploadingField(verbose_name="Текст поста", blank=True, default="")
     image = models.ImageField(verbose_name="Изображение", blank=True, default='', upload_to=set_image_name)
@@ -70,15 +84,20 @@ class Product(BaseModel):
 
     def get_currency_code(self):
         if self.currency:
+            if self.re_count:
+                return Currency.objects.get(code='UAH').code
             return self.currency.code
         return None
     get_currency_code.short_description = 'Валюта'
 
     def get_price_UAH(self):
         if self.price:
-            return round(self.price * self.course, 3)
+            if self.re_count:
+                return round(self.price * self.course, 3)
+            else:
+                return round(self.price, 3)
         return False
-    get_price_UAH.short_description = 'Цена в грн'
+    get_price_UAH.short_description = 'Цена в валюте'
 
     def get_delivery_count(self):
         return self.delivery_set.count()

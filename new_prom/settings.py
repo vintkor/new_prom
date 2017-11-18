@@ -155,6 +155,7 @@ except:
         {'label': 'Каталог', 'app_label': 'catalog', 'items': [
             {'name': 'catalog.product'},
             {'name': 'catalog.category'},
+            {'name': 'catalog.unit'},
         ]},
         {'label': 'Партнёры', 'app_label': 'partners', 'items': [
             {'name': 'partners.region'},
