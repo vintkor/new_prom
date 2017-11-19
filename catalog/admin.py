@@ -6,7 +6,7 @@ from .models import Category, Product, Feature, Delivery, Unit
 from import_export import resources
 from jet.admin import CompactInline
 from jet.filters import DateRangeFilter
-from .forms import SetCourseForm, SetUnitForm, SetCategoryForm
+from .forms import SetCourseForm, SetUnitForm, SetCategoryForm, SetCurrencyForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from xlsxwriter import Workbook
@@ -146,6 +146,36 @@ def set_category(modeladmin, request, queryset):
 set_category.short_description = 'Установить категорию'
 
 
+def set_currency(modeladmin, request, queryset):
+    form = None
+    template = 'set-course.html'
+    context = {'items': queryset, 'title': 'Установить валюту', 'action': 'set_currency'}
+
+    if 'apply' in request.POST:
+        form = SetCurrencyForm(request.POST)
+
+        if form.is_valid():
+            currency = form.cleaned_data['currency']
+
+            count = 0
+            for item in queryset:
+                item.currency = currency
+                item.save()
+                count += 1
+
+            modeladmin.message_user(request, "Валюта {} установлена у {} товаров.".format(currency, count), level=messages.SUCCESS)
+            return HttpResponseRedirect(request.get_full_path())
+
+    if not form:
+        form = SetCurrencyForm(initial={'_selected_action': request.POST.getlist(admin.ACTION_CHECKBOX_NAME)})
+        context['form'] = form
+
+    return render(request, template, context)
+
+
+set_course.short_description = 'Установить новый курс'
+
+
 def save_as_xlsx(modeladmin, request, queryset):
     response = HttpResponse(content_type='text/xlsx')
     response['Content-Disposition'] = 'attachment; filename="ppf-catalog-{}.xlsx"'.format(datetime.datetime.now())
@@ -222,7 +252,7 @@ class ProductAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.ManyToManyField: {'widget': FilteredSelectMultiple("Поставщики", is_stacked=False)},
     }
-    actions = (set_category, set_course, set_unit, re_count_off, re_count_on, save_as_xlsx)
+    actions = (set_category, set_course, set_unit, re_count_off, re_count_on, save_as_xlsx, set_currency)
 
 
 admin.site.register(Product, ProductAdmin)
