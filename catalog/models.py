@@ -107,6 +107,11 @@ class Product(BaseModel):
     def get_delivery_count(self):
         return self.delivery_set.count()
 
+    def get_unit(self):
+        if self.unit:
+            return self.unit.short_title
+        return 'шт.'
+
 
 class Feature(BaseModel):
     product = models.ForeignKey(Product, verbose_name='Товар', default=None)
