@@ -112,6 +112,18 @@ class Product(BaseModel):
             return self.unit.short_title
         return 'шт.'
 
+    def get_all_photo(self):
+        images = list()
+        other_photo = Photo.objects.filter(product=self)
+
+        if self.image:
+            images.append(self.image.url)
+
+        for item in other_photo:
+            images.append(item.image.url)
+
+        return images
+
 
 class Feature(BaseModel):
     product = models.ForeignKey(Product, verbose_name='Товар', default=None)
@@ -144,3 +156,15 @@ class Delivery(BaseModel):
 
     def __str__(self):
         return "{} - {}".format(self.product, self.branch)
+
+
+class Photo(BaseModel):
+    product = models.ForeignKey(Product, verbose_name='Товар')
+    image = models.ImageField(verbose_name='Изображение', upload_to=set_image_name)
+
+    class Meta:
+        verbose_name = "Изображение"
+        verbose_name_plural = "Изображения"
+
+    def __str__(self):
+        return "Image to product {}".format(self.product)

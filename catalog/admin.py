@@ -2,7 +2,7 @@ from django.contrib import admin, messages
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.db import models
 from mptt.admin import DraggableMPTTAdmin
-from .models import Category, Product, Feature, Delivery, Unit
+from .models import Category, Product, Feature, Delivery, Unit, Photo
 from import_export import resources
 from jet.admin import CompactInline
 from jet.filters import DateRangeFilter
@@ -27,13 +27,21 @@ class ProductResource(resources.ModelResource):
 class DeliveryInline(CompactInline):
     extra = 0
     model = Delivery
-    suit_classes = 'suit-tab suit-tab-delivery'
 
 
 class FeatureInline(CompactInline):
     extra = 0
     model = Feature
-    suit_classes = 'suit-tab suit-tab-feature'
+
+
+class PhotoInline(admin.TabularInline):
+    extra = 0
+    model = Photo
+
+
+@admin.register(Photo)
+class PhotoAdmin(admin.ModelAdmin):
+    list_display = ['product']
 
 
 def re_count_on(modeladmin, request, queryset):
@@ -241,7 +249,9 @@ def save_as_xlsx(modeladmin, request, queryset):
         worksheet.write(row + 1, 4, item.get_price_UAH())
         worksheet.write(row + 1, 5, item.get_currency_code())
         worksheet.write(row + 1, 6, item.get_unit())
-        worksheet.write(row + 1, 7, 'http://{}{}'.format(request.META.get('HTTP_HOST'), item.image.url))
+        worksheet.write(row + 1, 7, '{}'.format(
+            ''.join(['http://{}{}, '.format(request.META.get('HTTP_HOST'), img) for img in item.get_all_photo()])
+        ))
         worksheet.write(row + 1, 8, '+')
         worksheet.write(row + 1, 9, item.code)
         worksheet.write(row + 1, 10, item.category.id)
@@ -278,7 +288,7 @@ class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ["code"]
     search_fields = ('title',)
     resource_class = ProductResource
-    inlines = (FeatureInline, DeliveryInline)
+    inlines = (FeatureInline, DeliveryInline, PhotoInline)
     formfield_overrides = {
         models.ManyToManyField: {'widget': FilteredSelectMultiple("Поставщики", is_stacked=False)},
     }
