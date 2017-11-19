@@ -6,7 +6,7 @@ from .models import Category, Product, Feature, Delivery, Unit
 from import_export import resources
 from jet.admin import CompactInline
 from jet.filters import DateRangeFilter
-from .forms import SetCourseForm, SetUnitForm, SetCategoryForm, SetCurrencyForm
+from .forms import SetCourseForm, SetUnitForm, SetCategoryForm, SetCurrencyForm, SetPriceForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from xlsxwriter import Workbook
@@ -173,7 +173,37 @@ def set_currency(modeladmin, request, queryset):
     return render(request, template, context)
 
 
-set_course.short_description = 'Установить новый курс'
+set_currency.short_description = 'Установить валюту'
+
+
+def set_price(modeladmin, request, queryset):
+    form = None
+    template = 'set-course.html'
+    context = {'items': queryset, 'title': 'Установить цену', 'action': 'set_price'}
+
+    if 'apply' in request.POST:
+        form = SetPriceForm(request.POST)
+
+        if form.is_valid():
+            price = form.cleaned_data['price']
+
+            count = 0
+            for item in queryset:
+                item.price = price
+                item.save()
+                count += 1
+
+            modeladmin.message_user(request, "Цена {} установлена у {} товаров.".format(price, count), level=messages.SUCCESS)
+            return HttpResponseRedirect(request.get_full_path())
+
+    if not form:
+        form = SetPriceForm(initial={'_selected_action': request.POST.getlist(admin.ACTION_CHECKBOX_NAME)})
+        context['form'] = form
+
+    return render(request, template, context)
+
+
+set_price.short_description = 'Установить цену'
 
 
 def save_as_xlsx(modeladmin, request, queryset):
@@ -252,7 +282,7 @@ class ProductAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.ManyToManyField: {'widget': FilteredSelectMultiple("Поставщики", is_stacked=False)},
     }
-    actions = (set_category, set_course, set_unit, re_count_off, re_count_on, save_as_xlsx, set_currency)
+    actions = (set_category, set_course, set_unit, re_count_off, re_count_on, save_as_xlsx, set_currency, set_price)
 
 
 admin.site.register(Product, ProductAdmin)

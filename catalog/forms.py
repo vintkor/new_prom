@@ -26,3 +26,11 @@ class SetCurrencyForm(forms.Form):
     _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
 
     currency = forms.ModelChoiceField(queryset=Currency.objects.all(), widget=forms.Select(), required=True)
+
+
+class SetPriceForm(forms.Form):
+    _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
+
+    price = forms.CharField(label='Новая цена', widget=forms.NumberInput(
+        attrs={'placeholder': 'Новая цена', 'step': '0.01'},
+    ))
