@@ -21,7 +21,7 @@ from catalog.views import index
 
 urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),
-    url(r'^$', index),
+    url(r'^$', index, name='home'),
     url(r'^catalog/', include('catalog.urls')),
     url(r'^partners/', include('partners.urls')),
     url(r'^admin/', admin.site.urls),

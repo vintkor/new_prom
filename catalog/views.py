@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, View
+from django.contrib.auth.mixins import LoginRequiredMixin
 from catalog.models import Product, Feature, Category
 from partners.models import Region
 from xlsxwriter import Workbook
@@ -11,11 +12,12 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-class CatalogList(ListView):
+class CatalogList(LoginRequiredMixin, ListView):
     model = Product
     context_object_name = 'products'
     template_name = 'all-products.html'
     paginate_by = 50
+    login_url = 'home'
 
     def get_queryset(self, **kwargs):
         queryset = Product.objects.prefetch_related('delivery_set').select_related(
@@ -23,10 +25,11 @@ class CatalogList(ListView):
         return queryset
 
 
-class CatalogDetail(DetailView):
+class CatalogDetail(LoginRequiredMixin, DetailView):
     model = Product
     context_object_name = 'product'
     template_name = 'single-product.html'
+    login_url = 'home'
 
     def get_context_data(self, **kwargs):
         context = super(CatalogDetail, self).get_context_data(**kwargs)
