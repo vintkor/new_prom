@@ -249,9 +249,9 @@ def save_as_xlsx(modeladmin, request, queryset):
         worksheet.write(row + 1, 4, item.get_price_UAH())
         worksheet.write(row + 1, 5, item.get_currency_code())
         worksheet.write(row + 1, 6, item.get_unit())
-        worksheet.write(row + 1, 7, '{}'.format(
-            ''.join(['http://{}{}, '.format(request.META.get('HTTP_HOST'), img) for img in item.get_all_photo()])
-        ))
+        worksheet.write_string(row + 1, 7, ''.join(
+            ['http://{}{}, '.format(request.META.get('HTTP_HOST'), img) for img in item.get_all_photo()]
+            ))
         worksheet.write(row + 1, 8, '+')
         worksheet.write(row + 1, 9, item.code)
         worksheet.write(row + 1, 10, item.category.id)
