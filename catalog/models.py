@@ -112,6 +112,11 @@ class Product(BaseModel):
             return self.unit.short_title
         return 'шт.'
 
+    def get_images_count(self):
+        return Photo.objects.filter(product=self).count()
+
+    get_images_count.short_description = 'Доп изобр.'
+
     def get_all_photo(self):
         images = list()
         other_photo = Photo.objects.filter(product=self)
@@ -123,6 +128,9 @@ class Product(BaseModel):
             images.append(item.image.url)
 
         return images
+
+    def get_images(self):
+        return Photo.objects.filter(product=self)
 
 
 class Feature(BaseModel):

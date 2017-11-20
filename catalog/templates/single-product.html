@@ -6,7 +6,15 @@
     <div class="container-fluid">
     <div class="row">
         <div class="col-md-3" style="border-right: 1px solid #f6f6f6;">
-            <img src="{% if product.image %}{{ product.image.url }}{% else %}//via.placeholder.com/350x300{% endif %}" class="img-responsive">
+            <img src="{% if product.image %}{{ product.image.url }}{% else %}//via.placeholder.com/350x300{% endif %}" class="img-responsive big-image">
+            <ul class="product-images">
+                {% if product.image %}
+                <li class="product-images__li active" style="background-image: url('{{ product.image.url }}');" data-image="{{ product.image.url }}"></li>
+                {% endif %}
+                {% for image in product.get_images %}
+                    <li class="product-images__li" style="background-image: url('{{ image.image.url }}');" data-image="{{ image.image.url }}"></li>
+                {% endfor %}
+            </ul>
             {% if product.get_price_UAH %}
             <hr>
             <h4>{{ product.get_price_UAH }} UAH <small>{{ product.price }} {{ product.currency.code }} (курс {{ product.course }})</small></h4>
@@ -68,6 +76,28 @@
     .tab-pane {
         padding: 20px 0;
     }
+    .product-images {
+        margin: 0;
+        padding: 0;
+    }
+    .product-images__li {
+        display: inline-block;
+        list-style: none;
+        width: 60px;
+        height: 40px;
+        background-position: center;
+        background-size: cover;
+        margin-right: -4px;
+        transition: .2s;
+    }
+    .product-images__li:hover {
+        cursor: pointer;
+    }
+    .product-images__li.active {
+{#        border-bottom: 3px solid #d22;#}
+        transform: translateY(-40px);
+        opacity: .5;
+    }
     </style>
 {% endblock content %}
 
@@ -98,6 +128,15 @@
                 console.log(e);
             }
         });
+    });
+
+    var little_image = $('.product-images__li');
+    little_image.click(function (e) {
+        little_image.removeClass('active');
+        $(this).addClass('active');
+
+        var image = $(this).data('image');
+        $('.big-image').attr('src', image);
     });
 </script>
 {% endblock scripts_footer %}
