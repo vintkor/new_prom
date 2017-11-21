@@ -22,7 +22,7 @@ def set_file_name(instance, filename):
 
 
 def set_code():
-    last_product = Product.objects.last()
+    last_product = Product.objects.first()
     if last_product is None:
         new_code = 'ПФ-10000'
     else:
