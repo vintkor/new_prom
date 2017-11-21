@@ -169,10 +169,25 @@ class Delivery(BaseModel):
 class Photo(BaseModel):
     product = models.ForeignKey(Product, verbose_name='Товар')
     image = models.ImageField(verbose_name='Изображение', upload_to=set_image_name)
+    weight = models.PositiveSmallIntegerField(verbose_name='Порядок', default=0)
 
     class Meta:
         verbose_name = "Изображение"
         verbose_name_plural = "Изображения"
+        ordering = ['weight']
 
     def __str__(self):
         return "Image to product {}".format(self.product)
+
+    def get_img_tag(self):
+        return """<span style="
+                                background-image: url('{}');
+                                background-size: cover;
+                                background-position: center;
+                                width: 60px; height: 40px;
+                                display: block;
+                                position: relative;
+                                "><span>""".format(self.image.url)
+
+    get_img_tag.short_description = 'Preview'
+    get_img_tag.allow_tags = True

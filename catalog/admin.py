@@ -37,6 +37,8 @@ class FeatureInline(CompactInline):
 class PhotoInline(admin.TabularInline):
     extra = 0
     model = Photo
+    fields = ('get_img_tag', 'image', 'weight')
+    readonly_fields = ('get_img_tag',)
 
 
 @admin.register(Photo)

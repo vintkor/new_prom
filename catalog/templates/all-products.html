@@ -20,9 +20,10 @@
                     <th>Цена</th>
                     <th>Курс</th>
                     <th>Цена в грн.</th>
-                    <th>Добавление</th>
+                    <th>Изм</th>
                     <th>Поставщики</th>
                     <th>IMG</th>
+                    <th>Добавление</th>
                 </tr>
                 {% for product in products %}
                 <tr>
@@ -33,13 +34,14 @@
                     <td>{% if product.price %}{{ product.price }} <span class="label label-info pull-right">{{ product.currency.code }}</span>{% endif %}</td>
                     <td>{{ product.course }}</td>
                     <td>{% if product.price %}{{ product.get_price_UAH }}{% endif %}</td>
-                    <td>{{ product.created }}</td>
+                    <td>{{ product.unit.short_title }}</td>
                     <td><span class="label {% if product.get_delivery_count == 0 %}label-danger{% else %}label-info{%endif%}">{{ product.get_delivery_count }}</span></td>
                     <td><span class="label
                                             {% if product.get_images_count == 0 %}label-danger
                                             {% elif product.get_images_count < 5 %}label-default
                                             {% else %}label-success
                                             {%endif%}">{{ product.get_images_count }}</span></td>
+                    <td>{{ product.created }}</td>
                 </tr>
                 {% endfor %}
             </table>
