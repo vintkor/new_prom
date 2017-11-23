@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
+{% load my_tags %}
 
 {% block title %}{{ product.title }} - ППФ{% endblock title %}
 
 {% block content %}
+    {% breadcrumbs product.category product.title %}
     <div class="container-fluid">
     <div class="row">
         <div class="col-md-3" style="border-right: 1px solid #f6f6f6;">
