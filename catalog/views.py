@@ -20,9 +20,38 @@ class CatalogList(LoginRequiredMixin, ListView):
     login_url = 'home'
 
     def get_queryset(self, **kwargs):
-        queryset = Product.objects.prefetch_related('delivery_set').select_related(
-            'category', 'currency').filter(active=True)
+        queryset = Product.objects.prefetch_related('delivery_set', 'photo_set').select_related(
+            'category', 'currency', 'unit').filter(active=True)
+
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(CatalogList, self).get_context_data(**kwargs)
+        context['nodes'] = Category.objects.all()
+
+        return context
+
+
+class CatalogCategoryList(LoginRequiredMixin, ListView):
+    model = Product
+    context_object_name = 'products'
+    template_name = 'all-products.html'
+    paginate_by = 50
+    login_url = 'home'
+
+    def get_queryset(self, **kwargs):
+        category = Category.objects.get(id=self.kwargs.get('pk'))
+        categories = (item.id for item in category.get_descendants(include_self=True))
+
+        queryset = Product.objects.prefetch_related('delivery_set', 'photo_set').select_related(
+            'category', 'currency', 'unit').filter(active=True, category__in=categories)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(CatalogCategoryList, self).get_context_data(**kwargs)
+        context['nodes'] = Category.objects.all()
+
+        return context
 
 
 class CatalogDetail(LoginRequiredMixin, DetailView):

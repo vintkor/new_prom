@@ -4,6 +4,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.crypto import get_random_string
 from partners.models import Branch
+from django.core.urlresolvers import reverse
 from currency.models import Currency
 
 
@@ -59,6 +60,9 @@ class Category(BaseModel, MPTTModel):
     def __str__(self):
         return "{}".format(self.title)
 
+    def get_absolute_url(self):
+        return reverse('category', args=[self.id])
+
     def get_id(self):
         if self.parent:
             return self.parent.id
@@ -86,6 +90,9 @@ class Product(BaseModel):
 
     def __str__(self):
         return "{}".format(self.title)
+
+    def get_absolute_url(self):
+        return reverse('single-product', args=[str(self.id)])
 
     def get_currency_code(self):
         if self.currency:

@@ -3,6 +3,22 @@
 {% block title %}ППФ - все товары{% endblock title %}
 
 {% block content %}
+
+{#    <ul class="navi__ul">#}
+{#        {% load mptt_tags %}#}
+{#        {% recursetree nodes %}#}
+{#            <li class="navi__li">#}
+{#                <a href="{{ node.get_absolute_url }}">{{ node.title }}</a>#}
+{#                {% if not node.is_leaf_node %}#}
+{#                    <ul class="navi__ul__children">#}
+{#                        {{ children }}#}
+{#                    </ul>#}
+{#                {% endif %}#}
+{#            </li>#}
+{#        {% endrecursetree %}#}
+{#    </ul>#}
+
+
     <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
@@ -29,18 +45,18 @@
                 <tr>
                     <td><div class="product-image" style="background-image: url('{% if product.image %}{{ product.image.url }}{% else %}//via.placeholder.com/350x300{% endif %}');"></div></th>
                     <td><code>{{ product.code }}</code></td>
-                    <td>{% if product.category %}{{ product.category }}{% endif %}</td>
-                    <td><a href="{% url 'single-product' product.id %}">{{ product.title }}</a></td>
+                    <td>{% if product.category %}<a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a> {% endif %}</td>
+                    <td><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></td>
                     <td>{% if product.price %}{{ product.price }} <span class="label label-info pull-right">{{ product.currency.code }}</span>{% endif %}</td>
                     <td>{{ product.course }}</td>
                     <td>{% if product.price %}{{ product.get_price_UAH }}{% endif %}</td>
                     <td>{{ product.unit.short_title }}</td>
                     <td><span class="label {% if product.get_delivery_count == 0 %}label-danger{% else %}label-info{%endif%}">{{ product.get_delivery_count }}</span></td>
                     <td><span class="label
-                                            {% if product.get_images_count == 0 %}label-danger
-                                            {% elif product.get_images_count < 5 %}label-default
+                                            {% if product.photo_set.all.count == 0 %}label-danger
+                                            {% elif product.photo_set.all.count < 5 %}label-default
                                             {% else %}label-success
-                                            {%endif%}">{{ product.get_images_count }}</span></td>
+                                            {%endif%}">{{ product.photo_set.all.count }}</span></td>
                     <td>{{ product.created }}</td>
                 </tr>
                 {% endfor %}
