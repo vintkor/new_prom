@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
+{% load my_tags %}
 
 {% block title %}ППФ - все товары{% endblock title %}
 
 {% block content %}
-
+    {% if category %}
+        {% breadcrumbs category %}
+    {% endif %}
 
 {#    <ul class="navi__ul">#}
 {#        {% load mptt_tags %}#}

@@ -40,8 +40,8 @@ class CatalogCategoryList(LoginRequiredMixin, ListView):
     login_url = 'home'
 
     def get_queryset(self, **kwargs):
-        category = Category.objects.get(id=self.kwargs.get('pk'))
-        categories = (item.id for item in category.get_descendants(include_self=True))
+        self.category = Category.objects.get(id=self.kwargs.get('pk'))
+        categories = (item.id for item in self.category.get_descendants(include_self=True))
 
         queryset = Product.objects.prefetch_related('delivery_set', 'photo_set').select_related(
             'category', 'currency', 'unit').filter(active=True, category__in=categories)
@@ -49,7 +49,7 @@ class CatalogCategoryList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(CatalogCategoryList, self).get_context_data(**kwargs)
-        context['nodes'] = Category.objects.all()
+        context['category'] = self.category
 
         return context
 
