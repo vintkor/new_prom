@@ -287,6 +287,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ("title", "category", "code", "active", "price", "get_currency_code", "course",
                     "re_count", "get_price_UAH", "unit", "step", "get_images_count", "updated")
     list_filter = (('created', DateRangeFilter), 'code', 'category', 'currency', 're_count')
+    list_editable = ('price', 're_count', 'course')
     readonly_fields = ["code"]
     search_fields = ('title',)
     resource_class = ProductResource
