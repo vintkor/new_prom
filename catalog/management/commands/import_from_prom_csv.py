@@ -15,14 +15,14 @@ class ImportCSV:
     def set_products(self):
         for item in self.products:
 
-            img_temp = NamedTemporaryFile(delete=True)
-            img_temp.write(urlopen(item['image']).read())
-            img_temp.flush()
+            # img_temp = NamedTemporaryFile(delete=True)
+            # img_temp.write(urlopen(item['image']).read())
+            # img_temp.flush()
 
             product = Product(
                 title=item['name'],
                 text=item['description'],
-                image=ImageFile(img_temp),
+                # image=ImageFile(img_temp),
             )
             product.save()
 
