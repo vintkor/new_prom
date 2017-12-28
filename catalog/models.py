@@ -164,6 +164,7 @@ class Delivery(BaseModel):
     payment_card = RichTextUploadingField(verbose_name="Оплата картой")
     payment_bank = RichTextUploadingField(verbose_name="Оплата расчётный счёт")
     delivery_condition = RichTextUploadingField(verbose_name="Условие поставки", default=' ')
+    return_product = RichTextUploadingField(verbose_name="Возврат", blank=True, null=True, default=None)
 
     class Meta:
         verbose_name = "Доп инфо"

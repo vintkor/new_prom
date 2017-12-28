@@ -120,6 +120,21 @@
         </div>
     </div>
 
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="return_product-head">
+            <h4 class="panel-title"><a role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#dop-info"
+                                       href="#collapse-return_product"
+                                       aria-expanded="true"
+                                       aria-controls="collapse-return_product">Возврат</a>
+            </h4>
+        </div>
+        <div id="collapse-return_product" class="panel-collapse collapse" role="tabpanel" aria-labelledby="return_product-head">
+            <div class="panel-body">{{ delivery.return_product | safe }}</div>
+        </div>
+    </div>
+
 </div>
 
 {% if prices %}
